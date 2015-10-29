@@ -32,7 +32,8 @@ public class Task4 {
             String line = in.nextLine();
 
             String[] header = line.split("\\|\\-");
-            String[] contextStr = header[0].split(",");
+            String[] contextStr = commaSplit(header[0]);
+            //header[0].split(",");
 
             Statement expectedBeta = parser.parse(header[1]);
             Set<String> freeContextVariables = new HashSet<>();
@@ -129,5 +130,27 @@ public class Task4 {
         } catch (AnnotatorException e) {
             System.err.println("Error while annotating " + e.getStatement() + ": " + e.getMessage());
         }
+    }
+
+    private String[] commaSplit(String s) {
+        int balance = 0;
+        String[] contextStr;
+        ArrayList<String> temp = new ArrayList<>();
+        int k = 0;
+        int lastPos = 0;
+        while (k < s.length()) {
+            char c = s.charAt(k);
+            if (c == '(')
+                balance++;
+            if (c == ')')
+                balance--;
+            if (c == ',' && balance == 0) {
+                temp.add(s.substring(lastPos, k));
+                lastPos = k + 1;
+            }
+            k++;
+        }
+        temp.add(s.substring(lastPos, s.length()));
+        return temp.toArray(new String[temp.size()]);
     }
 }
