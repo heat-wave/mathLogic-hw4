@@ -166,15 +166,14 @@ public class ProofAnnotator {
                         patternMatcher.match(subQ.substTerm(var, new ArithmeticPattern(0)), stR);
                         Expression theta = patternMatcher.matched[0];
 
-                        if (theta != null) {
-                            if (subQ.isFreeForSubstitution(varName, theta)) {
+                        if (theta == null ||  ((theta instanceof Function && ((Function) theta).name.equals(varName) && ((Function) theta).terms.size() == 0) || subQ.isFreeForSubstitution(varName, theta))) {
                                 // statement is axiom 11
                                 annotatedProof.add(new AnnotatedAxiom(statement, 10));
                                 continue;
                             } else {
                                 throw new AnnotatorException(statement, "term " + theta + " isn't free for substitution in " + subQ + " instead of variable " + varName);
-                            }
                         }
+
                     }
 
                     // (ψ[x := θ]) → ∃x(ψ)
@@ -189,9 +188,13 @@ public class ProofAnnotator {
                         Expression theta = patternMatcher.matched[0];
 
                         if (theta != null) {
-                            // statement is axiom 12*/
-                            annotatedProof.add(new AnnotatedAxiom(statement, 11));
-                            continue;
+                            if ((theta instanceof Function && ((Function) theta).name.equals(varName) && ((Function) theta).terms.size() == 0) || subQ.isFreeForSubstitution(varName, theta)) {
+                                // statement is axiom 12
+                                annotatedProof.add(new AnnotatedAxiom(statement, 11));
+                                continue;
+                            } else {
+                                throw new AnnotatorException(statement, "term " + theta + " isn't free for substitution in " + subQ + " instead of variable " + varName);
+                            }
                         }
                     }
 
