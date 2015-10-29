@@ -123,18 +123,21 @@ public class Task4 {
                     System.out.println();
                 }
             }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+            System.err.println("Maybe |- is missing?");
         } catch (IOException e) {
             System.err.println(e.getMessage());
         } catch (ParserException e) {
             System.err.println("Error while parsing " + e.getLine());
         } catch (AnnotatorException e) {
             System.err.println("Error while annotating " + e.getStatement() + ": " + e.getMessage());
+            //e.printStackTrace();
         }
     }
 
     private String[] commaSplit(String s) {
         int balance = 0;
-        String[] contextStr;
         ArrayList<String> temp = new ArrayList<>();
         int k = 0;
         int lastPos = 0;

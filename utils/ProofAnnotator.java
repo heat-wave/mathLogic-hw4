@@ -189,13 +189,9 @@ public class ProofAnnotator {
                         Expression theta = patternMatcher.matched[0];
 
                         if (theta != null) {
-                            if (subQ.isFreeForSubstitution(varName, theta)) {
-                                // statement is axiom 12
-                                annotatedProof.add(new AnnotatedAxiom(statement, 11));
-                                continue;
-                            } else {
-                                throw new AnnotatorException(statement, "term " + theta + " isn't free for substitution in " + subQ + " instead of variable " + varName);
-                            }
+                            // statement is axiom 12*/
+                            annotatedProof.add(new AnnotatedAxiom(statement, 11));
+                            continue;
                         }
                     }
 
